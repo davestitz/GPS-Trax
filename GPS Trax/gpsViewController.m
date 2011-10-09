@@ -205,6 +205,7 @@
     
     
     NSString * gpsDataToDisplay = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nHAcc: %f\nVAcc: %f", coreLatFormatted, coreLngFormatted, coreAltFormatted, coreSpeedFormatted, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
+    NSLog(@"Core Location: %@", gpsDataToDisplay);
     
     //gpsResponse.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", coreLat, coreLng];
     //gpsResponseAlt.text = [NSString stringWithFormat:@"Altitude: %@ Speed (MPH): %@ HAcc: %f VAcc: %f", coreAlt, coreSpeed, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
