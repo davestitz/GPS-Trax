@@ -50,28 +50,23 @@
     gpsResponseAltjs = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
@@ -80,20 +75,28 @@
 
 
 
-- (IBAction) startCore {
+- (void) startGPS {
+    
+    coreCount = 0; //Track GPS Update Calls
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    [self.locationManager startUpdatingLocation];
     
-    locationManager = nil;
+    // Set a movement threshold for new events.
+    self.locationManager.distanceFilter = 20;
+    
+    [self.locationManager startUpdatingLocation];
     
 }
 
-- (IBAction) stopGPS {
+- (void) stopGPS {
     [self.locationManager stopUpdatingLocation];
     
+}
+
+- (void) finishUpdating {
+    [self stopGPS];
 }
 
 - (IBAction) toggleGPS: (id) sender {  
@@ -101,19 +104,10 @@
     [UIView setAnimationDuration: 0.2];  
     
     if (gpsSwitch.on) {
-        NSLog(@"GPS ON");
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        [self.locationManager startUpdatingLocation];
-        
-        //locationManager = nil;
-        //fetchingLocation = YES;
+        [self startGPS];
     }
     else {
-        NSLog(@"GPS OFF");
-        [self.locationManager stopUpdatingLocation];
-        //fetchingLocation = NO;
+        [self stopGPS];
     }
     
     [UIView commitAnimations];  
@@ -139,6 +133,40 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	
+    coreCount = coreCount++;
+    NSLog(@"Core Count: %d", coreCount);
+    coreUpdateCount.text = [NSString stringWithFormat:@"%d", coreCount];
+    
+    
+    
+    /* Refuse updates more than a minute old */
+    if (abs([newLocation.timestamp timeIntervalSinceNow]) < 15.0) {
+        
+        //if the horizontalAccuracy is negative, CoreLocation failed, and we want a good reading, so we want at least 100 meter accuracy
+        if(newLocation.horizontalAccuracy < 100 && newLocation.horizontalAccuracy > 0)
+        {    
+            
+            
+                        
+            
+            /* And fire it manually */
+            [self finishUpdating];
+        }
+    
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //Javascript HTML5 API Code
+    
     NSString *webLat = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('latitude').textContent"];
     NSString *webLong = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('longitude').textContent"];
     NSString *webAccuracy = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('accuracy').textContent"];
@@ -149,43 +177,44 @@
     NSLog (@"Web Lat: %@, Web Long: %@", webLat, webLong);
     NSLog (@"Web Acc: %@, Web Alt: %@, Web Speed: %@", webAccuracy, webAltitude, webSpeed);
     
-	NSLog(@"Lat = %f Long = %f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
+    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", webLat, webLong];
+    gpsResponseAltjs.text = [NSString stringWithFormat:@"Altitude: %@ Speed: %@ Accuracy: %@ Alt Accuracy: %@ Heading: %@", webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
+
+    NSString *annoTitleWeb = [NSString stringWithFormat:@"%@ %@", webLat, webLong];
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    
+    
+    
+    
+    
+	//NSLog(@"Lat = %f Long = %f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
+	//distanceMeters = newLocation.altitude;
+    //distanceFeet = distanceMeters * 3.2808399;
+    //tAltitude  = [NSString stringWithFormat:@"%.02f ft",    distanceFeet];
+    //NSString *coreSpeed = [NSString stringWithFormat:@"%f", newLocation.speed];
 	
-    coreCount = coreCount++;
-    NSLog(@"Core Count: %d", coreCount);
-    coreUpdateCount.text = [NSString stringWithFormat:@"%d", coreCount];
+    
     
 	CLLocationDegrees  latitude = newLocation.coordinate.latitude;
 	CLLocationDegrees longitude = newLocation.coordinate.longitude;
-	//NSString *coreLat = [[NSNumber numberWithDouble:latitude] stringValue];
-	//NSString *coreLng = [[NSNumber numberWithDouble:longitude] stringValue];
     
-    NSString *coreLat = [NSString stringWithFormat:@"%f", latitude];
-    NSString *coreLng = [NSString stringWithFormat:@"%f", longitude];
-    
-    
-    NSString *coreAlt = [NSString stringWithFormat:@"%.02f ft", 3.2808399 * newLocation.altitude];
+    NSString *coreLatFormatted = [NSString stringWithFormat:@"%f", latitude];
+    NSString *coreLngFormatted = [NSString stringWithFormat:@"%f", longitude];
+    NSString *coreAltFormatted = [NSString stringWithFormat:@"%.02f ft", 3.2808399 * newLocation.altitude];
+    NSString *coreSpeedFormatted = [NSString stringWithFormat:@"%0.1f", 2.23693629 * newLocation.speed];
     
     
-    //distanceMeters = newLocation.altitude;
-    //distanceFeet = distanceMeters * 3.2808399;
-    //tAltitude  = [NSString stringWithFormat:@"%.02f ft",    distanceFeet];
+    NSString * gpsDataToDisplay = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nHAcc: %f\nVAcc: %f", coreLatFormatted, coreLngFormatted, coreAltFormatted, coreSpeedFormatted, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
     
+    //gpsResponse.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", coreLat, coreLng];
+    //gpsResponseAlt.text = [NSString stringWithFormat:@"Altitude: %@ Speed (MPH): %@ HAcc: %f VAcc: %f", coreAlt, coreSpeed, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
     
+    //NSString *annoTitle = [NSString stringWithFormat:@"%@ %@", coreLatFormatted, coreLngFormatted];
     
     
     
-    NSString *coreSpeed = [NSString stringWithFormat:@"%0.1f", 2.23693629 * newLocation.speed];
-    //NSString *coreSpeed = [NSString stringWithFormat:@"%f", newLocation.speed];
-	
-    gpsResponse.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", coreLat, coreLng];
-    gpsResponseAlt.text = [NSString stringWithFormat:@"Altitude: %@ Speed (MPH): %@ HAcc: %f VAcc: %f", coreAlt, coreSpeed, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
     
-    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", webLat, webLong];
-    gpsResponseAltjs.text = [NSString stringWithFormat:@"Altitude: %@ Speed: %@ Accuracy: %@ Alt Accuracy: %@ Heading: %@", webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
     
-    NSString *annoTitle = [NSString stringWithFormat:@"%@ %@", coreLat, coreLng];
-    NSString *annoTitleWeb = [NSString stringWithFormat:@"%@ %@", webLat, webLong];
     
     //-------------------------------------------------------
     //Add Annotation for CoreLocation Call
@@ -197,14 +226,14 @@
         span.latitudeDelta=0.02;
         span.longitudeDelta=0.02;
         
-        CLLocationCoordinate2D location = [self coreAddressLocation: [coreLat floatValue] withLong:[coreLng floatValue]];
+        CLLocationCoordinate2D location = [self coreAddressLocation: [coreLatFormatted floatValue] withLong:[coreLngFormatted floatValue]];
         region.span=span;
         region.center=location;
         
         [coreMapView removeAnnotations:coreMapView.annotations];
         MapAnnotation* coreCurrentLocation = [[MapAnnotation alloc] init];
         coreCurrentLocation.coordinate = location;
-        coreCurrentLocation.title = annoTitle;
+        coreCurrentLocation.title = [NSString stringWithFormat:@"%@ %@", coreLatFormatted, coreLngFormatted];
         [coreMapView addAnnotation:coreCurrentLocation];
         
         [coreMapView setRegion:region animated:TRUE];
@@ -243,8 +272,6 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[manager stopUpdatingLocation];
 	self.locationManager = nil;
-	//fetchingLocation = NO;
-	
 	
 	switch([error code])
 	{
@@ -276,8 +303,6 @@
 			break;
 	}		
 }
-
-
 
 - (void) updateCoreLocationAnn {
     
@@ -344,21 +369,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 - (IBAction) showInfo: (id) sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Known Issues" message:@"1) The javascript API refreshes on the button click event yet the core location call is constantly updated." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     alert.tag = 526;
@@ -366,14 +376,5 @@
     [alert show];
     //[alert release];
 }
-
-
-
-
-
-
-
-
-
 
 @end

@@ -18,7 +18,14 @@
     IBOutlet UITextView *gpsResponseAltjs;
     
     IBOutlet UILabel *coreUpdateCount;
+    
+    
+    
+    
     CLLocationManager *locationManager;
+
+    
+    
 	BOOL fetchingLocation;
     IBOutlet UIWebView *webView;
     
@@ -46,13 +53,21 @@
 @property (nonatomic, retain) IBOutlet UITextView *gpsResponseAltjs;
 
 @property (nonatomic, retain) IBOutlet UILabel *coreUpdateCount;
+
+
+
 @property (nonatomic, retain) CLLocationManager *locationManager;
+
+
 @property (nonatomic, retain) UIWebView *webView;
 
 @property (nonatomic, retain) IBOutlet MKMapView *coreMapView;
 @property (nonatomic, retain) IBOutlet MKMapView *webMapView;
 
 @property (nonatomic, retain) UISwitch *gpsSwitch; 
+
+
+
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
 

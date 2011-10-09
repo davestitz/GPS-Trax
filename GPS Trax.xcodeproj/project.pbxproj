@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4846352F14422EEB0063CC29 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846352D14422EEB0063CC29 /* Default@2x.png */; };
+		4846353014422EEB0063CC29 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846352E14422EEB0063CC29 /* Default.png */; };
+		4846353414422F5F0063CC29 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846353214422F5F0063CC29 /* background@2x.png */; };
+		4846353514422F5F0063CC29 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846353314422F5F0063CC29 /* background.png */; };
 		48DB94841441460E00FD203D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB94831441460E00FD203D /* UIKit.framework */; };
 		48DB94861441460E00FD203D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB94851441460E00FD203D /* Foundation.framework */; };
 		48DB94881441460E00FD203D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB94871441460E00FD203D /* CoreGraphics.framework */; };
@@ -27,6 +31,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4846352D14422EEB0063CC29 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		4846352E14422EEB0063CC29 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		4846353214422F5F0063CC29 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
+		4846353314422F5F0063CC29 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		48DB947F1441460E00FD203D /* GPS Trax.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GPS Trax.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48DB94831441460E00FD203D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		48DB94851441460E00FD203D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -147,6 +155,10 @@
 		48DB94B81441471D00FD203D /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				4846353214422F5F0063CC29 /* background@2x.png */,
+				4846353314422F5F0063CC29 /* background.png */,
+				4846352D14422EEB0063CC29 /* Default@2x.png */,
+				4846352E14422EEB0063CC29 /* Default.png */,
 				48DB94B91441474500FD203D /* Icon.png */,
 				48DB94A4144146BC00FD203D /* dots.png */,
 				48DB94A5144146BC00FD203D /* dots@2x.png */,
@@ -212,6 +224,10 @@
 				48DB94AD144146BC00FD203D /* gps.html in Resources */,
 				48DB94AE144146BC00FD203D /* Icon@2x.png in Resources */,
 				48DB94BA1441474500FD203D /* Icon.png in Resources */,
+				4846352F14422EEB0063CC29 /* Default@2x.png in Resources */,
+				4846353014422EEB0063CC29 /* Default.png in Resources */,
+				4846353414422F5F0063CC29 /* background@2x.png in Resources */,
+				4846353514422F5F0063CC29 /* background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +354,7 @@
 				48DB949F1441460E00FD203D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
