@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+            <meta http-equiv="refresh" content="1" >
+		<title>Geolocation Test</title>
+ 
+		<script language="javascript" type="text/javascript">
+			function getLocation() {
+				// Get location no more than 10 minutes old. 600000 ms = 10 minutes.
+				navigator.geolocation.getCurrentPosition(showLocation, showError, {enableHighAccuracy:true,maximumAge:0});
+			}
+ 
+			function showError(error) {
+				alert(error.code + ' ' + error.message);
+			}
+ 
+			function showLocation(position) {
+				geoinfo.innerHTML='<p>Latitude: <div id=\'latitude\'>' + position.coords.latitude + '</div></p>' 
+				+ '<p>Longitude: <div id=\'longitude\'>' + position.coords.longitude + '</div></p>' 
+				+ '<p>Accuracy: <div id=\'accuracy\'>' + position.coords.accuracy + '</div></p>' 
+				+ '<p>Altitude: <div id=\'altitude\'>' + position.coords.altitude + '</div></p>' 
+				+ '<p>Altitude accuracy: <div id=\'alt_altitude\'>' + position.coords.altitudeAccuracy + '</p>' 
+				+ '<p>Speed:  <div id=\'speed\'>' + position.coords.speed + '</div></p>' 
+				+ '<p>Heading: <div id=\'heading\'>' + position.coords.heading + '</p>';
+			}
+		</script>
+            <style>
+                body {padding: 0px; background-color: transparent; color: #666666;}
+                p {line-height: 14px; font-family: Sans-serif; size: 12px;}
+            </style>
+            
+	</head>
+	<body onload="getLocation();">
+		<script language="javascript" type="text/javascript">	
+			if (navigator.geolocation) {  
+                document.write('<p><a href="/getGPS/" OnClick="getLocation();" title="Call Javascript GPS API">Call Javascript GPS API</a>');
+				//document.write('<p><input type="button" onclick="getLocation()" value="Call Javascript GPS API" /></p>');
+			} else {  
+				document.write('<p>Sorry, your device or browser software does not appear to support geolocation services.</p>');  
+			}  
+		</script>
+ 
+		<div id="geoinfo"></div>
+	</body>
+</html>
