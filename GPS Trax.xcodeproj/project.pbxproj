@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3388559414428FA100515957 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3388559214428FA100515957 /* Icon.png */; };
+		3388559514428FA100515957 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3388559314428FA100515957 /* Icon@2x.png */; };
 		4846352F14422EEB0063CC29 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846352D14422EEB0063CC29 /* Default@2x.png */; };
 		4846353014422EEB0063CC29 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846352E14422EEB0063CC29 /* Default.png */; };
 		4846353414422F5F0063CC29 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4846353214422F5F0063CC29 /* background@2x.png */; };
@@ -23,14 +25,14 @@
 		48DB94AB144146BC00FD203D /* dots.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DB94A4144146BC00FD203D /* dots.png */; };
 		48DB94AC144146BC00FD203D /* dots@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DB94A5144146BC00FD203D /* dots@2x.png */; };
 		48DB94AD144146BC00FD203D /* gps.html in Resources */ = {isa = PBXBuildFile; fileRef = 48DB94A6144146BC00FD203D /* gps.html */; };
-		48DB94AE144146BC00FD203D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DB94A7144146BC00FD203D /* Icon@2x.png */; };
 		48DB94AF144146BC00FD203D /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DB94A9144146BC00FD203D /* MapAnnotation.m */; };
 		48DB94B5144146EB00FD203D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB94B4144146EB00FD203D /* CoreLocation.framework */; };
 		48DB94B7144146EF00FD203D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DB94B6144146EF00FD203D /* MapKit.framework */; };
-		48DB94BA1441474500FD203D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 48DB94B91441474500FD203D /* Icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3388559214428FA100515957 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		3388559314428FA100515957 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		4846352D14422EEB0063CC29 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		4846352E14422EEB0063CC29 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		4846353214422F5F0063CC29 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
@@ -53,12 +55,10 @@
 		48DB94A4144146BC00FD203D /* dots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dots.png; sourceTree = "<group>"; };
 		48DB94A5144146BC00FD203D /* dots@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots@2x.png"; sourceTree = "<group>"; };
 		48DB94A6144146BC00FD203D /* gps.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = gps.html; sourceTree = "<group>"; };
-		48DB94A7144146BC00FD203D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		48DB94A8144146BC00FD203D /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
 		48DB94A9144146BC00FD203D /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
 		48DB94B4144146EB00FD203D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		48DB94B6144146EF00FD203D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		48DB94B91441474500FD203D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,14 +155,14 @@
 		48DB94B81441471D00FD203D /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				3388559214428FA100515957 /* Icon.png */,
+				3388559314428FA100515957 /* Icon@2x.png */,
 				4846353214422F5F0063CC29 /* background@2x.png */,
 				4846353314422F5F0063CC29 /* background.png */,
 				4846352D14422EEB0063CC29 /* Default@2x.png */,
 				4846352E14422EEB0063CC29 /* Default.png */,
-				48DB94B91441474500FD203D /* Icon.png */,
 				48DB94A4144146BC00FD203D /* dots.png */,
 				48DB94A5144146BC00FD203D /* dots@2x.png */,
-				48DB94A7144146BC00FD203D /* Icon@2x.png */,
 			);
 			name = Graphics;
 			sourceTree = "<group>";
@@ -222,12 +222,12 @@
 				48DB94AB144146BC00FD203D /* dots.png in Resources */,
 				48DB94AC144146BC00FD203D /* dots@2x.png in Resources */,
 				48DB94AD144146BC00FD203D /* gps.html in Resources */,
-				48DB94AE144146BC00FD203D /* Icon@2x.png in Resources */,
-				48DB94BA1441474500FD203D /* Icon.png in Resources */,
 				4846352F14422EEB0063CC29 /* Default@2x.png in Resources */,
 				4846353014422EEB0063CC29 /* Default.png in Resources */,
 				4846353414422F5F0063CC29 /* background@2x.png in Resources */,
 				4846353514422F5F0063CC29 /* background.png in Resources */,
+				3388559414428FA100515957 /* Icon.png in Resources */,
+				3388559514428FA100515957 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +319,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GPS Trax/GPS Trax-Prefix.pch";
 				INFOPLIST_FILE = "GPS Trax/GPS Trax-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -330,6 +331,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GPS Trax/GPS Trax-Prefix.pch";
 				INFOPLIST_FILE = "GPS Trax/GPS Trax-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
