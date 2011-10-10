@@ -34,8 +34,7 @@
     
 }
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -78,6 +77,7 @@
 
 
 - (void) startGPS {
+    NSLog(@"startGPS");
     
     coreCount = 0; //Track GPS Update Calls
     
@@ -86,11 +86,11 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
     // Set a movement threshold for new events.
-    self.locationManager.distanceFilter = 20;
+    //self.locationManager.distanceFilter = 20;
     
     [self.locationManager startUpdatingLocation];
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:2
+    timer = [NSTimer scheduledTimerWithTimeInterval:6
                                              target:self 
                                            selector:@selector(refreshWebView) 
                                            userInfo:nil 
@@ -108,6 +108,7 @@
 }
 
 - (void) refreshWebView {
+    NSLog(@"refreshWebView Called.");
     [webView reload];
 }
 
@@ -157,24 +158,12 @@
         
         //if the horizontalAccuracy is negative, CoreLocation failed, and we want a good reading, so we want at least 100 meter accuracy
         if(newLocation.horizontalAccuracy < 100 && newLocation.horizontalAccuracy > 0)
-        {    
-            
-            
-                        
+        {
             
             /* And fire it manually */
             //[self finishUpdating];
         }
-    
     }
-
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -183,15 +172,15 @@
     NSString *webLat = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('latitude').textContent"];
     NSString *webLong = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('longitude').textContent"];
     NSString *webAccuracy = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('accuracy').textContent"];
-    NSString *webAltitude = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('altitude').textContent"];
+    NSString *webAltitude = [NSString stringWithFormat:@"%.02f ft", 3.2808399 * [[self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('altitude').textContent"] floatValue]];
     NSString *webAltAcc = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('alt_altitude').textContent"]; 
-    NSString *webSpeed = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('speed').textContent"];   
+    NSString *webSpeed = [NSString stringWithFormat:@"%0.1f", 2.23693629 * [[self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('speed').textContent"] floatValue]];   
     NSString *webHeading = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('heading').textContent"];   
-    NSLog (@"Web Lat: %@, Web Long: %@", webLat, webLong);
-    NSLog (@"Web Acc: %@, Web Alt: %@, Web Speed: %@", webAccuracy, webAltitude, webSpeed);
+    //NSLog (@"Web Lat: %@, Web Long: %@", webLat, webLong);
+    //NSLog (@"Web Acc: %@, Web Alt: %@, Web Speed: %@", webAccuracy, webAltitude, webSpeed);
     
-    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", webLat, webLong];
-    gpsResponseAltjs.text = [NSString stringWithFormat:@"Altitude: %@ Speed: %@ Accuracy: %@ Alt Accuracy: %@ Heading: %@", webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
+    //gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", webLat, webLong];
+    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed: %@\nAccuracy: %@\nAlt Accuracy: %@\nHeading: %@", webLat, webLong, webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
 
     NSString *annoTitleWeb = [NSString stringWithFormat:@"%@ %@", webLat, webLong];
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
