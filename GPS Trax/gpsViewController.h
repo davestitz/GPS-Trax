@@ -24,7 +24,7 @@
     
     CLLocationManager *locationManager;
 
-    
+    NSTimer *timer;
     
 	BOOL fetchingLocation;
     IBOutlet UIWebView *webView;
@@ -57,7 +57,7 @@
 
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
-
+@property (nonatomic, retain) NSTimer *timer;
 
 @property (nonatomic, retain) UIWebView *webView;
 

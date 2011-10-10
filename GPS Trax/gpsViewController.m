@@ -11,7 +11,7 @@
 
 @implementation gpsViewController
 
-@synthesize gpsResponse, webView, locationManager, coreMapView, coreUpdateCount, webMapView, gpsSwitch, gpsResponsejs;
+@synthesize gpsResponse, webView, locationManager, coreMapView, coreUpdateCount, webMapView, gpsSwitch, gpsResponsejs, timer;
 @synthesize gpsResponseAlt, gpsResponseAltjs;
 
 - (void)didReceiveMemoryWarning
@@ -48,6 +48,8 @@
     
     gpsResponseAlt = nil;
     gpsResponseAltjs = nil;
+    
+    timer = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -88,16 +90,27 @@
     
     [self.locationManager startUpdatingLocation];
     
+    timer = [NSTimer scheduledTimerWithTimeInterval:2
+                                             target:self 
+                                           selector:@selector(refreshWebView) 
+                                           userInfo:nil 
+                                            repeats:YES];
 }
 
 - (void) stopGPS {
     [self.locationManager stopUpdatingLocation];
-    
+    [timer invalidate];
+    timer = nil;
 }
 
 - (void) finishUpdating {
     [self stopGPS];
 }
+
+- (void) refreshWebView {
+    [webView reload];
+}
+
 
 - (IBAction) toggleGPS: (id) sender {  
     [UIView beginAnimations:nil context:NULL];  
@@ -150,7 +163,7 @@
                         
             
             /* And fire it manually */
-            [self finishUpdating];
+            //[self finishUpdating];
         }
     
     }
@@ -206,6 +219,8 @@
     
     NSString * gpsDataToDisplay = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nHAcc: %f\nVAcc: %f", coreLatFormatted, coreLngFormatted, coreAltFormatted, coreSpeedFormatted, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
     NSLog(@"Core Location: %@", gpsDataToDisplay);
+    
+    gpsResponse.text = gpsDataToDisplay;
     
     //gpsResponse.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", coreLat, coreLng];
     //gpsResponseAlt.text = [NSString stringWithFormat:@"Altitude: %@ Speed (MPH): %@ HAcc: %f VAcc: %f", coreAlt, coreSpeed, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
