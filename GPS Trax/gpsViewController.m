@@ -11,7 +11,7 @@
 
 @implementation gpsViewController
 
-@synthesize gpsResponse, webView, locationManager, coreMapView, coreUpdateCount, webMapView, gpsSwitch, gpsResponsejs, timer;
+@synthesize gpsResponse, webView, locationManager, coreMapView, coreUpdateCount, webMapView, gpsSwitch, gpsResponsejs, timer, coreDistanceFrom, geoUpdateCount;
 @synthesize gpsResponseAlt, gpsResponseAltjs;
 
 - (void)didReceiveMemoryWarning
@@ -43,8 +43,9 @@
     gpsResponsejs = nil;
     webView = nil;
     coreUpdateCount = nil;
+    coreDistanceFrom = nil;
     gpsSwitch = nil;
-    
+    geoUpdateCount = nil;
     gpsResponseAlt = nil;
     gpsResponseAltjs = nil;
     
@@ -80,6 +81,8 @@
     NSLog(@"startGPS");
     
     coreCount = 0; //Track GPS Update Calls
+    coreUpdateCount.text = @"0";
+    geoUpdateCount.text = @"0";
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -90,17 +93,19 @@
     
     [self.locationManager startUpdatingLocation];
     
+    /*
     timer = [NSTimer scheduledTimerWithTimeInterval:6
                                              target:self 
                                            selector:@selector(refreshWebView) 
                                            userInfo:nil 
                                             repeats:YES];
+     */
 }
 
 - (void) stopGPS {
     [self.locationManager stopUpdatingLocation];
-    [timer invalidate];
-    timer = nil;
+    //[timer invalidate];
+    //timer = nil;
 }
 
 - (void) finishUpdating {
@@ -147,10 +152,12 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	
-    coreCount = coreCount++;
+    coreCount += 1;
     NSLog(@"Core Count: %d", coreCount);
     coreUpdateCount.text = [NSString stringWithFormat:@"%d", coreCount];
     
+    NSLog(@"Geo Core Count: %@", [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('geoCount').textContent"]);
+    geoUpdateCount.text = [self.webView stringByEvaluatingJavaScriptFromString: @"document.getElementById('geoCount').textContent"];
     
     
     /* Refuse updates more than a minute old */
@@ -180,11 +187,18 @@
     //NSLog (@"Web Acc: %@, Web Alt: %@, Web Speed: %@", webAccuracy, webAltitude, webSpeed);
     
     //gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@ Long: %@", webLat, webLong];
-    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed: %@\nAccuracy: %@\nAlt Accuracy: %@\nHeading: %@", webLat, webLong, webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
+    gpsResponsejs.text = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nAccuracy: %@\nAlt Accuracy: %@\nHeading: %@", webLat, webLong, webAltitude, webSpeed, webAccuracy, webAltAcc, webHeading];
 
-    NSString *annoTitleWeb = [NSString stringWithFormat:@"%@ %@", webLat, webLong];
+    //NSString *annoTitleWeb = [NSString stringWithFormat:@"%@ %@", webLat, webLong];
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     
+    
+    
+        
+    float betweenDistance = [oldLocation distanceFromLocation:newLocation];
+    
+    NSLog(@"Distance is %f",betweenDistance);
+    coreDistanceFrom.text = [[NSString stringWithFormat:@"%.02f ft\n", 3.2808399 * betweenDistance] stringByAppendingString:coreDistanceFrom.text];
     
     
     
@@ -206,7 +220,7 @@
     NSString *coreSpeedFormatted = [NSString stringWithFormat:@"%0.1f", 2.23693629 * newLocation.speed];
     
     
-    NSString * gpsDataToDisplay = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nHAcc: %f\nVAcc: %f", coreLatFormatted, coreLngFormatted, coreAltFormatted, coreSpeedFormatted, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
+    NSString * gpsDataToDisplay = [NSString stringWithFormat:@"Lat: %@\nLong: %@\nAltitude: %@\nSpeed (MPH): %@\nHAcc: %.02f\nVAcc: %.02f", coreLatFormatted, coreLngFormatted, coreAltFormatted, coreSpeedFormatted, newLocation.horizontalAccuracy, newLocation.verticalAccuracy];
     NSLog(@"Core Location: %@", gpsDataToDisplay);
     
     gpsResponse.text = gpsDataToDisplay;
@@ -226,14 +240,20 @@
     
     if (newLocation.coordinate.latitude != oldLocation.coordinate.latitude && newLocation.coordinate.longitude != oldLocation.coordinate.longitude) {
         
-        MKCoordinateRegion region;
-        MKCoordinateSpan span;
-        span.latitudeDelta=0.02;
-        span.longitudeDelta=0.02;
+        
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance
+        (newLocation.coordinate, 
+         newLocation.horizontalAccuracy, 
+         newLocation.horizontalAccuracy);
+        
+        //MKCoordinateRegion region;
+        //MKCoordinateSpan span;
+        //span.latitudeDelta = 0.01;
+        //span.longitudeDelta = 0.01;
         
         CLLocationCoordinate2D location = [self coreAddressLocation: [coreLatFormatted floatValue] withLong:[coreLngFormatted floatValue]];
-        region.span=span;
-        region.center=location;
+        //region.span = span;
+        //region.center = location;
         
         [coreMapView removeAnnotations:coreMapView.annotations];
         MapAnnotation* coreCurrentLocation = [[MapAnnotation alloc] init];
@@ -251,6 +271,7 @@
     
     //-------------------------------------------------------
     //Add Annotation for Javascript Call
+    /*
     MKCoordinateRegion regionWeb;
     MKCoordinateSpan spanWeb;
     spanWeb.latitudeDelta=0.02;
@@ -268,6 +289,7 @@
     
     [webMapView setRegion:regionWeb animated:TRUE];
     [webMapView regionThatFits:regionWeb];
+     */
     //-------------------------------------------------------
     
 }
@@ -319,11 +341,19 @@
     
 }
 
-
-
-
-
-
+- (IBAction) expandMapView: (id) sender {  
+    [UIView beginAnimations:nil context:NULL];  
+    [UIView setAnimationDuration: 0.2];  
+    
+    if (self.coreMapView.frame.size.height == 210) {
+        self.coreMapView.frame = CGRectMake(0,418,320,83);
+    }
+    else {
+        self.coreMapView.frame = CGRectMake(0,355,320,210);
+    }
+    
+    [UIView commitAnimations];  
+}
 
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

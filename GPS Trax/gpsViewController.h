@@ -18,7 +18,8 @@
     IBOutlet UITextView *gpsResponseAltjs;
     
     IBOutlet UILabel *coreUpdateCount;
-    
+    IBOutlet UITextView *coreDistanceFrom;
+    IBOutlet UILabel *geoUpdateCount;
     
     
     
@@ -53,8 +54,8 @@
 @property (nonatomic, retain) IBOutlet UITextView *gpsResponseAltjs;
 
 @property (nonatomic, retain) IBOutlet UILabel *coreUpdateCount;
-
-
+@property (nonatomic, retain) IBOutlet UITextView *coreDistanceFrom;
+@property (nonatomic, retain) IBOutlet UILabel *geoUpdateCount;
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) NSTimer *timer;

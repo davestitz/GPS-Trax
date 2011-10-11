@@ -6,8 +6,16 @@
 		<title>Geolocation Test</title>
  
 		<script language="javascript" type="text/javascript">
-			function getLocation() {
-				navigator.geolocation.getCurrentPosition(showLocation, showError, {enableHighAccuracy:true,maximumAge:0});
+			var gps;
+            var geoCount = 0;
+            
+            function getLocation() {
+                
+                //used to get updated callbacks when the GPS detects movement
+                gps = navigator.geolocation.watchPosition(showLocation, showError, {enableHighAccuracy:true, maximumAge:6000, timeout:27000});
+                
+                //used for a onetime call to the GPS
+				//navigator.geolocation.getCurrentPosition(showLocation, showError, {enableHighAccuracy:true,maximumAge:0});
 			}
  
 			function showError(error) {
@@ -15,13 +23,16 @@
 			}
  
 			function showLocation(position) {
+                geoCount += 1;
+                
 				geoinfo.innerHTML='<p>Latitude: <div id=\'latitude\'>' + position.coords.latitude + '</div></p>' 
 				+ '<p>Longitude: <div id=\'longitude\'>' + position.coords.longitude + '</div></p>' 
 				+ '<p>Accuracy: <div id=\'accuracy\'>' + position.coords.accuracy + '</div></p>' 
 				+ '<p>Altitude: <div id=\'altitude\'>' + position.coords.altitude + '</div></p>' 
 				+ '<p>Altitude Accuracy: <div id=\'alt_altitude\'>' + position.coords.altitudeAccuracy + '</div></p>' 
 				+ '<p>Speed:  <div id=\'speed\'>' + position.coords.speed + '</div></p>' 
-				+ '<p>Heading: <div id=\'heading\'>' + position.coords.heading + '</div></p>';
+				+ '<p>Heading: <div id=\'heading\'>' + position.coords.heading + '</div></p>'
+                + '<div id=\'geoCount\' style=\'visibility: hidden;\'>' + geoCount + '</div>';
 			}
 		</script>
             <style>
@@ -32,11 +43,11 @@
 	</head>
 	<body onload="getLocation();">
 		<script language="javascript" type="text/javascript">	
-			if (navigator.geolocation) {
+			//if (navigator.geolocation) {
 				//document.write('<p><input type="button" onclick="getLocation()" value="Call Javascript GPS API" /></p>');
-			} else {
+			//} else {
 				//document.write('<p>Sorry, your device or browser software does not appear to support geolocation services.</p>');  
-			}
+			//}
 		</script>
 		<div id="geoinfo"></div>
 	</body>
